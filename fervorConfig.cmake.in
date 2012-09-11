@@ -1,0 +1,55 @@
+#
+# fervorConfig.cmake - fervor CMake configuration file for external projects.
+#
+
+# The fervor include file directories.
+SET(fervor_INCLUDE_DIRS "@fervor_INCLUDE_DIRS_CONFIG@")
+ 
+# The fervor library directories. Note that if
+# fervor_CONFIGURATION_TYPES is set (see below) then these directories
+# will be the parent directories under which there will be a directory
+# of runtime binaries for each configuration type.
+SET(fervor_LIBRARY_DIRS "@fervor_LIBRARY_DIRS_CONFIG@")
+  
+# The fervor runtime library directories. Note that if
+# fervor_CONFIGURATION_TYPES is set (see below) then these directories
+# will be the parent directories under which there will be a directory
+# of runtime libraries for each configuration type.
+SET(fervor_RUNTIME_LIBRARY_DIRS "@fervor_RUNTIME_LIBRARY_DIRS_CONFIG@")
+ 
+# The location of the Usefervor.cmake file.
+SET(fervor_USE_FILE "@fervor_USE_FILE@")
+  
+ 
+# A fervor install tree always provides one build configuration. 
+# A fervor build tree may provide either one or multiple build 
+# configurations depending on the CMake generator used. 
+# Since fervor can be used either from a build tree or an install 
+# tree it is useful for outside projects to know the configurations available. 
+# If this fervorConfig.cmake is in a fervor install 
+# tree fervor_CONFIGURATION_TYPES will be empty and 
+# fervor_BUILD_TYPE will be set to the value of
+# CMAKE_BUILD_TYPE used to build fervor. If fervorConfig.cmake 
+# is in a fervor build tree then fervor_CONFIGURATION_TYPES 
+# and fervor_BUILD_TYPE will have values matching CMAKE_CONFIGURATION_TYPES 
+# and CMAKE_BUILD_TYPE for that build tree (only one will ever be set).
+SET(fervor_CONFIGURATION_TYPES @fervor_CONFIGURATION_TYPES_CONFIG@)
+SET(fervor_BUILD_TYPE @fervor_BUILD_TYPE_CONFIG@)
+
+FIND_LIBRARY(fervor_LIBRARY_DEBUG fervor
+  HINTS ${fervor_LIBRARY_DIRS}/Debug NO_DEFAULT_PATH)
+  
+FIND_LIBRARY(fervor_LIBRARY_RELEASE fervor
+  HINTS ${fervor_LIBRARY_DIRS}/Release NO_DEFAULT_PATH)
+  
+FIND_LIBRARY(fervor_LIBRARY fervor
+    HINTS ${fervor_LIBRARY_DIRS} NO_DEFAULT_PATH)
+  
+IF(fervor_LIBRARY_DEBUG AND fervor_LIBRARY_RELEASE)
+  SET(fervor_LIBRARY "debug;${fervor_LIBRARY_DEBUG};optimized;${fervor_LIBRARY_RELEASE}")
+ELSEIF(fervor_LIBRARY_DEBUG)
+  SET(fervor_LIBRARY ${fervor_LIBRARY_DEBUG})
+ELSEIF(fervor_LIBRARY_RELEASE)
+  SET(fervor_LIBRARY ${fervor_LIBRARY_RELEASE})
+ENDIF()
+

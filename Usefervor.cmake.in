@@ -1,0 +1,16 @@
+#
+# This module is provided as fervor_USE_FILE by fervorConfig.cmake. 
+# It can be INCLUDED in a project to load the needed compiler and linker
+# settings to use fervor.
+#
+ 
+IF(NOT fervor_USE_FILE_INCLUDED)
+  SET(fervor_USE_FILE_INCLUDED 1)
+  
+  # Add include directories needed to use fervor.
+  INCLUDE_DIRECTORIES(${fervor_INCLUDE_DIRS})
+ 
+  # Add link directories needed to use fervor.
+  LINK_DIRECTORIES(${fervor_LIBRARY_DIRS})
+ 
+ENDIF()
